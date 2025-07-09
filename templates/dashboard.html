@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="dashboard-layout">
+    <div class="welcome-card">
+        <h2>Welcome, <span class="username-highlight">{{ user.username }}</span>!</h2>
+        <p>Your personal fortress for digital assets. Encrypted, secure, and always at your command.</p>
+        <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data" class="upload-form">
+            <label for="file-upload" class="btn btn-upload">
+                <i class="fas fa-upload"></i> Upload New File
+            </label>
+            <input type="file" id="file-upload" name="file" style="display: none;" onchange="this.form.submit();">
+        </form>
+    </div>
+
+    <section class="vault-files-card">
+        <h2>Your Encrypted Files</h2>
+        {% if files %}
+            <div class="file-list">
+                {% for file in files %}
+                <div class="file-item">
+                    <span class="filename">{{ file.replace('.enc', '') }}</span>
+                    <div class="file-actions">
+                        <button class="btn btn-info" onclick="openPreview('{{ file }}')">Preview</button>
+                        <a href="{{ url_for('download_file', filename=file) }}" class="btn btn-primary">Download</a>
+                        <form method="POST" action="{{ url_for('verify_file_integrity_web', filename=file) }}" style="display:inline;">
+                            <button type="submit" class="btn btn-warning">Verify</button>
+                        </form>
+                        <form method="POST" action="{{ url_for('delete_file', filename=file) }}" style="display:inline;">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-files-message">Your vault is empty. Upload your first file!</p>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

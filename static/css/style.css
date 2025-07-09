@@ -1,0 +1,431 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Exo 2', sans-serif;
+    background-color: #1a1a1a; /* Dark background */
+    color: #e0e0e0; /* Light grey text */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Background Canvas */
+#background-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Behind content */
+    opacity: 0.7; /* Slightly transparent */
+}
+
+/* Container for main content */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Header */
+header {
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+    padding: 15px 0;
+    border-bottom: 1px solid #0f0;
+    box-shadow: 0 2px 10px rgba(0, 255, 0, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8em;
+}
+
+header h1 a {
+    color: #0f0; /* Green color for vault name */
+    text-decoration: none;
+    font-family: 'Fira Code', monospace;
+    font-weight: 700;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.7);
+}
+
+header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+header nav ul li {
+    margin-left: 25px;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 600;
+}
+
+header nav ul li span {
+    color: #00ffff; /* Cyan for username */
+}
+
+header nav ul li a {
+    color: #00ffff;
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+header nav ul li a:hover {
+    color: #00ccff;
+    text-shadow: 0 0 8px rgba(0, 204, 255, 0.7);
+}
+
+/* Main Content Area */
+main {
+    flex: 1; /* Allows main content to grow and push footer down */
+    padding-top: 30px; /* Space from header */
+}
+
+/* Flash Messages */
+.flashes {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 600;
+    border: 1px solid transparent;
+    max-width: 600px; /* Limit width of alert messages */
+    margin-left: auto;
+    margin-right: auto;
+    animation: fadeIn 0.5s ease-out; /* Fade in animation */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.alert-success { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
+.alert-danger { background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+.alert-warning { background-color: #fff3cd; color: #856404; border-color: #ffeeba; }
+.alert-info { background-color: #d1ecf1; color: #0c5460; border-color: #bee5eb; }
+
+/* Auth Card for Login/Register - Consistent Size */
+.auth-card {
+    background-color: rgba(30, 30, 30, 0.9);
+    border: 1px solid #0f0;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+    max-width: 550px; /* Consistent with dashboard cards now */
+    margin: 100px auto 50px auto; /* Center with top/bottom margin */
+    text-align: center;
+    backdrop-filter: blur(5px);
+}
+
+.auth-card h2 {
+    color: #0f0;
+    margin-bottom: 30px;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #0f0;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9em;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+    width: calc(100% - 20px); /* Full width minus padding */
+    padding: 10px;
+    border: 1px solid #0f0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #0f0;
+    border-radius: 5px;
+    font-family: 'Fira Code', monospace;
+    font-size: 1em;
+    outline: none; /* Remove default focus outline */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #00ffff; /* Cyan border on focus */
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.5); /* Glowing effect */
+}
+
+/* Password Visibility Toggle */
+.password-group {
+    position: relative; /* Needed for absolute positioning of the icon */
+}
+
+.password-group input[type="password"],
+.password-group input[type="text"] { /* Ensure both types have consistent padding */
+    padding-right: 40px; /* Make space for the eye icon */
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px; 
+    top: 50%;
+    transform: translateY(20%);
+    cursor: pointer;
+    color: #0f0; /* Green color for the icon */
+    font-size: 1.2em;
+    z-index: 2;
+    transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+    color: #00ffff;
+}
+
+.password-toggle .fas.fa-eye-slash {
+    color: #ccc; /* Slightly faded when password is hidden */
+}
+
+
+/* Dashboard Layout */
+.dashboard-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 40px;
+    justify-content: center;
+}
+
+.welcome-card,
+.vault-files-card { 
+    background-color: rgba(30, 30, 30, 0.9);
+    border: 1px solid #0f0;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+    padding: 30px;
+    box-sizing: border-box;
+    backdrop-filter: blur(5px);
+    flex: 1;
+    min-width: 300px;
+    max-width: 550px; 
+}
+
+.welcome-card {
+    text-align: center;
+}
+
+.welcome-card h2 {
+    color: #0f0;
+    margin-bottom: 15px;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+}
+
+.welcome-card p {
+    color: #aaffaa;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.vault-files-card h2 {
+    color: #0f0;
+    margin-bottom: 20px;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    text-align: center;
+}
+
+.file-list {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px; /* Space for scrollbar */
+}
+
+/* Custom scrollbar for file-list */
+.file-list::-webkit-scrollbar {
+    width: 8px;
+}
+.file-list::-webkit-scrollbar-track {
+    background: #2a2a2a;
+    border-radius: 10px;
+}
+.file-list::-webkit-scrollbar-thumb {
+    background: #00ffff; /* Cyan scrollbar thumb */
+    border-radius: 10px;
+    border: 2px solid #2a2a2a;
+}
+.file-list::-webkit-scrollbar-thumb:hover {
+    background: #00ccff;
+}
+
+
+.file-item {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(0, 255, 0, 0.3);
+    border-radius: 5px;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.file-item .filename {
+    color: #00ff00;
+    font-family: 'Fira Code', monospace;
+    flex-grow: 1;
+    margin-right: 15px;
+    word-break: break-all;
+    font-size: 0.95em;
+}
+
+.file-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 5px;
+    justify-content: flex-end;
+}
+
+/* Buttons */
+.btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 600;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.9em;
+    white-space: nowrap;
+}
+
+.btn:hover {
+    transform: translateY(-2px); 
+}
+
+.btn-primary { background-color: #007bff; color: white; }
+.btn-primary:hover { background-color: #0056b3; box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); }
+.btn-danger { background-color: #dc3545; color: white; }
+.btn-danger:hover { background-color: #bd2130; box-shadow: 0 0 10px rgba(220, 53, 69, 0.5); }
+.btn-warning { background-color: #ffc107; color: #343a40; }
+.btn-warning:hover { background-color: #e0a800; box-shadow: 0 0 10px rgba(255, 193, 7, 0.5); }
+.btn-info { background-color: #17a2b8; color: white; }
+.btn-info:hover { background-color: #138496; box-shadow: 0 0 10px rgba(23, 162, 184, 0.5); }
+.btn-upload {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+.btn-upload:hover {
+    background-color: #218838;
+    box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+}
+
+.no-files-message {
+    color: #aaffaa;
+    text-align: center;
+    margin-top: 30px;
+    font-style: italic;
+}
+
+/* Footer */
+footer {
+    margin-top: auto; /* Pushes footer to the bottom */
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 15px 0;
+    border-top: 1px solid #0f0;
+    text-align: center;
+    color: #aaa;
+    font-size: 0.9em;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    header .container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    header nav ul {
+        margin-top: 15px;
+    }
+
+    header nav ul li {
+        margin: 0 10px;
+    }
+
+    .auth-card {
+        padding: 25px;
+        margin: 50px auto;
+        max-width: 90%; 
+    }
+
+    .dashboard-layout {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .welcome-card,
+    .vault-files-card {
+        width: 95%;
+        max-width: unset;
+        padding: 20px;
+    }
+
+    .file-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .file-item .filename {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .file-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .password-toggle {
+        right: 15px;
+        transform: translateY(20%); 
+    }
+}
