@@ -347,5 +347,10 @@ def preview_file(filename):
     else:
         abort(403, description="Access denied to preview file.")
 
+# if __name__ == '__main__':  #for vs code
+#     app.run(debug=True, port=5000)
+
+#for render
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get("PORT", 10000))  # 10000 is a fallback for local dev
+    app.run(debug=True, host='0.0.0.0', port=port)
